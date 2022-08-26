@@ -49,4 +49,3 @@ go get -u github.com/luanruisong/broadcast
         time.Sleep(time.Second)
     }
 ```
-

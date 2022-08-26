@@ -7,7 +7,7 @@ import (
 
 type (
 	NoticeStation struct {
-		lock   sync.Mutex
+		lock   sync.RWMutex
 		signal *SignalStation
 		curr   interface{}
 	}
@@ -23,6 +23,8 @@ func (ss *NoticeStation) CurrSignal() <-chan struct{} {
 }
 
 func (ss *NoticeStation) CurrValue() interface{} {
+	ss.lock.RLock()
+	defer ss.lock.RUnlock()
 	return ss.curr
 }
 
@@ -46,6 +48,6 @@ func (ss *NoticeStation) Notice(value interface{}) {
 func NewNoticeStation() *NoticeStation {
 	return &NoticeStation{
 		signal: NewSignalStation(),
-		lock:   sync.Mutex{},
+		lock:   sync.RWMutex{},
 	}
 }

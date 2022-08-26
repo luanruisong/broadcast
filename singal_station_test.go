@@ -28,10 +28,10 @@ func TestSignalStation(t *testing.T) {
 func TestOnSignal(t *testing.T) {
 
 	ss := NewSignalStation()
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 800; i++ {
 		idx := i
 		go ss.OnSignal(context.TODO(), func() {
-			t.Log(idx, "receive signal")
+			t.Log(idx, "receive signal", time.Now().Unix())
 		})
 	}
 	for i := 0; i < 10; i++ {
