@@ -26,14 +26,15 @@ func TestNoticeStation(t *testing.T) {
 func TestOnNotice(t *testing.T) {
 	ns := NewNoticeStation()
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 8000; i++ {
 		go func(idx int) {
 			ns.OnNotice(context.Background(), func(value interface{}) {
 				fmt.Println(idx, value)
 			})
 		}(i)
 	}
-
+	fmt.Println("start goroutine over")
+	time.Sleep(time.Second * 5)
 	for i := 0; i < 10; i++ {
 		ns.Notice(time.Now().Format("2006-01-02 15:04:05"))
 		time.Sleep(time.Second)

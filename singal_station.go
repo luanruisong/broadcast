@@ -7,12 +7,14 @@ import (
 
 type (
 	SignalStation struct {
-		lock sync.Mutex
+		lock sync.RWMutex
 		cp   chan struct{}
 	}
 )
 
 func (ss *SignalStation) CurrSignal() <-chan struct{} {
+	ss.lock.RLock()
+	defer ss.lock.RUnlock()
 	return ss.cp
 }
 
@@ -37,7 +39,7 @@ func (ss *SignalStation) Send() {
 
 func NewSignalStation() *SignalStation {
 	return &SignalStation{
-		lock: sync.Mutex{},
+		lock: sync.RWMutex{},
 		cp:   make(chan struct{}),
 	}
 }
